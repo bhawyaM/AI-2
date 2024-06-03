@@ -7,11 +7,14 @@ import PropTypes from "prop-types";
 import { AppContext } from '../Context/AppContext'
 import EditIcon from '@mui/icons-material/Edit';
 import Spinner from '../Spinner'
-
+import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
+import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 // eslint-disable-next-line no-unused-vars
 const Input = ({ showResponse, setResponse }) => {
-  const {data, posts ,curretnIndex, setIndex,components, setComponet,setPost,disable,setDisable,loading,showEdit,setshowEdit}=useContext(AppContext)
+  const {data, posts ,curretnIndex, setIndex,components,fetchData, setComponet,setPost,disable,setDisable,loading,showEdit,setshowEdit}=useContext(AppContext)
 
+  const navigate = useNavigate();
 
   const [active, setActive]= useState(0);
   // let promtIndex = data[active]?.answer.length - 1;
@@ -58,7 +61,7 @@ function valueCheck (i){
   };
 
   return (
-    <div className=" h-full flex flex-col justify-between items-center w-full gap-8  py-8">
+    <div className=" min-h-screen flex flex-col items-center justify-between w-full gap-8  py-8">
       <div className=" h-full flex flex-row gap-20 w-[90%]">
         {/* input container */}
         <div className=" h-full flex flex-col gap-10 w-[40%]">
@@ -78,7 +81,7 @@ function valueCheck (i){
                     {showEdit?<EditIcon onClick={()=>{setDisable(false),setshowEdit(false)}} fontSize="extrasmall"/>:null}
                     
                   </div>
-                  <div className="w-full rounded-[10px] "
+                  <div className="w-full rounded-[10px] flex flex-row items-center"
                    style={active==i?{backgroundColor:"white"}:null}
                  >
                     <TextField
@@ -100,12 +103,17 @@ function valueCheck (i){
                         readOnly: disable,
                       }}
                       // style={{ color: disable ? "red" : "initial",}}
-                  
                     />
+
+                  <PhotoCameraOutlinedIcon 
+                    className="mr-3 "
+                    onClick={()=>{}}
+                  />
+
                   </div>
                   {curretnIndex === i || components.length === 0 ? (
                     <button onClick={(event) => {addComponet(i),event.stopPropagation()}}>
-                      <Avatar sx={{ bgcolor: "transparent", color: "black" }}>
+                      <Avatar sx={{ bgcolor: "transparent", color: "black" ,fontSize:"35px"}}>
                         +
                       </Avatar>
                     </button>
@@ -174,6 +182,18 @@ function valueCheck (i){
 
         )}
       </div>
+
+      <div className=' w-[90%] h-full flex flex-row  gap-3 justify-end items-end' >
+      <div className=' h-full flex' >
+            <Button onClick={()=>{navigate("/")}}   variant="contained">Back</Button>
+        </div>
+        <div className=' h-full flex' >
+            <Button onClick={()=>{setResponse(true),fetchData(),setDisable(true), setshowEdit(false)}} disabled={((components[0]=="")?true:false)} variant="contained">Submit</Button>
+        </div>
+        <div className=' h-full flex' >
+            <Button onClick={()=>{}}  disabled={((data.length===0)?true:false)}  variant="contained">Next</Button>
+        </div>
+    </div>
     </div>
   );
 };

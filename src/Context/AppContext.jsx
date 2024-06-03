@@ -125,6 +125,7 @@ export default function AppContextProvider({children}){
     const [components, setComponet] = useState([""]);
     const [disable,setDisable]=useState(false);
     const [showEdit,setshowEdit]=useState(false);
+    const [folder, setFolder]=useState("")
     function delayText(index, nextWord) {
         setTimeout(function () {
           if (index === 0) {
@@ -152,7 +153,7 @@ export default function AppContextProvider({children}){
             return !data.some(item => item.question.includes(value));
         })
         console.log(input)
-        console.log (sentInput)
+        console.log (folder)
         try {
             for (let i = 0; i < sentInput.length; i++) {
                 const result = await fetch(url, {
@@ -162,7 +163,7 @@ export default function AppContextProvider({children}){
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        "persist_directory": "cybersecurity",
+                        "persist_directory": folder,
                         "query": sentInput[i],
                         "hide_source": false,
                         "mute_stream": false
@@ -175,7 +176,6 @@ export default function AppContextProvider({children}){
 
                 const res = await result.json();
                 const response = res.answer;
-                const secondRes= res.question
 
                 // setData(prevData => {
                 //     const newData = [...prevData];
@@ -230,7 +230,9 @@ console.log(curretnIndex)
         disable,
         setDisable,
         showEdit,
-        setshowEdit
+        setshowEdit,
+        folder, 
+        setFolder
      
     }
 
